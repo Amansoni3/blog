@@ -1,29 +1,23 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteBlog } from "../store/slice";
+import { deleteBlog } from "../store/slice/blogSlice";
 
-const ViewPost = () => {
-  const { id } = useParams(); // Extract the `id` from the URL
+const BlogDetails = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // Fetch the blog from Redux state based on the `id`
   const blog = useSelector((state) =>
     state.blogs.blogs.find((blog) => blog.id === Number(id))
   );
 
   if (!blog) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <h1 className="text-xl text-gray-600">Blog not found!</h1>
-      </div>
-    );
+    return <p>Blog not found!</p>;
   }
 
   const handleDelete = () => {
     dispatch(deleteBlog(blog.id));
-    navigate("/"); // Redirect to home after deleting the blog
+    navigate("/");
   };
 
   return (
@@ -55,4 +49,4 @@ const ViewPost = () => {
   );
 };
 
-export default ViewPost;
+export default BlogDetails;
