@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const blogs = useSelector((state) => state.blogs.blogs); // Fetch blogs from Redux state
-  console.log(blogs[0],'blogs')
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
       <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
@@ -11,9 +12,9 @@ const Home = () => {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.length > 0 ? (
-          blogs.map((blog, index) => (
+          blogs.map((blog) => (
             <div
-              key={index}
+              key={blog.id}
               className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow cursor-pointer"
             >
               <img
@@ -26,14 +27,11 @@ const Home = () => {
               </h2>
               <p
                 className="text-gray-600 mt-2"
-                dangerouslySetInnerHTML={{ __html: blog.postText.slice(0,40) }}
+                dangerouslySetInnerHTML={{ __html: blog.postText.slice(0, 40) }}
               />
-              <button
-                className="mt-4 text-blue-500 font-semibold hover:underline"
-                onClick={() => window.alert(`View details for: ${blog.title}`)}
-              >
+              <Link to={`/blog/${blog.id}`} className="mt-4 text-blue-500 font-semibold hover:underline">
                 Read More
-              </button>
+              </Link>
             </div>
           ))
         ) : (
