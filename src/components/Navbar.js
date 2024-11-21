@@ -88,13 +88,24 @@ function Navbar({ isAuth, setIsAuth }) {
           Home
         </Link>
         {isAuth && (
-          <Link
-            to="/createpost"
-            className="block text-lg hover:text-yellow-300"
-            onClick={toggleNav}
-          >
-            Create Post
-          </Link>
+          <>
+            <Link
+              to="/createpost"
+              className="block text-lg hover:text-yellow-300"
+              onClick={toggleNav}
+            >
+              Create Post
+            </Link>
+            <Link
+              to="/viewpost"
+              className="block text-lg hover:text-yellow-300"
+              onClick={toggleNav}
+            >
+              View Post
+            </Link>
+          </>
+
+
         )}
         {isAuth ? (
           <button onClick={signUserOut}>Logout</button>
