@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 const Home = () => {
   const blogs = useSelector((state) => state.blogs.blogs); // Fetch blogs from Redux state
-
+  console.log(blogs[0],'blogs')
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
       <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
@@ -14,19 +14,20 @@ const Home = () => {
           blogs.map((blog, index) => (
             <div
               key={index}
-              className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow"
+              className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow cursor-pointer"
             >
               <img
-                src={blog.image || 'https://via.placeholder.com/150'}
+                src={blog.imageUrl || 'https://via.placeholder.com/150'}
                 alt={blog.title}
                 className="w-full h-40 object-cover rounded-md"
               />
               <h2 className="text-xl font-bold text-gray-800 mt-4">
                 {blog.title}
               </h2>
-              <p className="text-gray-600 mt-2">
-                {blog.postText.slice(0, 100)}...
-              </p>
+              <p
+                className="text-gray-600 mt-2"
+                dangerouslySetInnerHTML={{ __html: blog.postText.slice(0,40) }}
+              />
               <button
                 className="mt-4 text-blue-500 font-semibold hover:underline"
                 onClick={() => window.alert(`View details for: ${blog.title}`)}

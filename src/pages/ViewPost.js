@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteBlog, updateBlog } from '../store/slice/blogSlice';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const ViewPost = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,7 @@ const ViewPost = () => {
 
   const [title, setTitle] = useState('');
   const [postText, setPostText] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   // Handle delete action
   const handleDelete = (id) => {
@@ -22,6 +25,7 @@ const ViewPost = () => {
     setCurrentBlog(blog);
     setTitle(blog.title);
     setPostText(blog.postText);
+    setImageUrl(blog.imageUrl);
     setEditMode(true);
   };
 
@@ -30,12 +34,43 @@ const ViewPost = () => {
     dispatch(
       updateBlog({
         id: currentBlog.id,
-        updatedData: { title, postText },
+        updatedData: { title, postText, imageUrl },
       })
     );
     setEditMode(false);
     setCurrentBlog(null);
   };
+
+  // ReactQuill toolbar configuration
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['blockquote', 'code-block'],
+      ['link', 'image'],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }],
+      ['clean'],
+    ],
+  };
+
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'list',
+    'bullet',
+    'blockquote',
+    'code-block',
+    'link',
+    'image',
+    'color',
+    'background',
+    'align',
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
@@ -50,7 +85,12 @@ const ViewPost = () => {
               className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow"
             >
               <h2 className="text-xl font-bold text-gray-800">{blog.title}</h2>
-              <p className="text-gray-600 mt-2">{blog.postText.slice(0, 100)}...</p>
+              <img
+                src={blog.imageUrl}
+                alt={blog.title}
+                className="w-full h-40 object-cover rounded-md mt-2"
+              />
+              <p className="text-gray-600 mt-2" dangerouslySetInnerHTML={{ __html: blog.postText.slice(0,40) }} />
               <div className="flex justify-between mt-4">
                 <button
                   onClick={() => openEditDialog(blog)}
@@ -84,11 +124,19 @@ const ViewPost = () => {
               placeholder="Title"
               className="w-full mb-4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             />
-            <textarea
+            <ReactQuill
               value={postText}
-              onChange={(e) => setPostText(e.target.value)}
-              placeholder="Content"
-              rows="4"
+              onChange={setPostText}
+              placeholder="Edit your blog content"
+              modules={modules}
+              formats={formats}
+              className="mb-4"
+            />
+            <input
+              type="text"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="Image URL"
               className="w-full mb-4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             />
             <div className="flex justify-end space-x-4">

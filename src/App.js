@@ -6,6 +6,7 @@ import Login from "../src/pages/Login";
 import { useState } from "react";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import ViewPost from "./pages/ViewPost";
+import Footer from "./components/Footer";
 
 function App() {
   // Initialize `isAuth` with localStorage
@@ -17,14 +18,13 @@ function App() {
     <Router>
       {/* Use the Navbar component */}
       <Navbar isAuth={isAuth} setIsAuth={setIsAuth} />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/viewpost" element={<ViewPost />} />
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-
       </Routes>
+      <Footer />
     </Router>
   );
 }
